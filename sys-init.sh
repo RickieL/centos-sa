@@ -1,9 +1,5 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8"
-export PATH=$PATH
-
-
 ## 该脚本需要以root用户运行
 user=$(whoami)
 if [ $user != 'root' ] ; then
@@ -11,12 +7,16 @@ if [ $user != 'root' ] ; then
     exit 1;
 fi
 
+export LANG="en_US.UTF-8"
+export PATH=$PATH
+
+
 ## 获取github上的脚本
-rm -rf centos-sa
+rm -rf centos-sa-master
 yum -y install unzip wget
 wget https://github.com/RickieL/centos-sa/archive/master.zip
-unzip centos-sa
-cd centos-sa
+unzip master.zip
+cd centos-sa-master
 
 PWDir=$(pwd)
 
@@ -110,7 +110,7 @@ yum -y install curl wget man vim yum-priorities ntpdate make gcc subversion zlib
 
 
 ## ntp时间同步
-echo '10 7 * * * /usr/sbin/ntpdate ntp.fudan.edu.cn' >> /var/spool/cron/root
+echo '10 7 * * * /usr/sbin/ntpdate cn.pool.ntp.org' >> /var/spool/cron/root
 /usr/sbin/ntpdate cn.pool.ntp.org >/dev/null 2>&1
 
 sleep 3
@@ -120,8 +120,8 @@ if [ $# -ne 0 ]; then
     arg=$@
     for i in $arg
     do
-        if [ -f $PWDir/install-$i.sh ] ; then
-            echo "$PWDir/bin/install-$i.sh >$PWDir/logs/$i.log 2>$PWDir/logs/$i.err" >> /etc/rc.local
+        if [ -f $PWDir/bin/install-$i.sh ] ; then
+            echo "$PWDir/bin/install-$i.sh >$PWDir/logs/$i.log 2>$PWDir/logs/$i.err & " >> /etc/rc.local
         fi
     done
 fi
