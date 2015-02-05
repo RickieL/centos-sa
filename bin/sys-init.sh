@@ -72,4 +72,19 @@ chown www:www -R /data/www/test  /data/logs /tmp/phpsession
 mkdir -p /data/mysql /var/lib/mysql /var/run/mysqld
 chown -R mysql:mysql /data/mysql  /var/lib/mysql /var/run/mysqld
 
+
+# 根据对应的参数，重启后自动安装
+if [ $# -ne 0 ]; then
+    arg=$@
+    for i in $arg
+    do
+        if [ -f $PWDir/bin/install-$i.sh ] ; then
+            echo "$PWDir/bin/install-$i.sh >$PWDir/logs/$i.log 2>$PWDir/logs/$i.err & " >> /etc/rc.local
+            echo "sleep 2"  >> /etc/rc.local
+        fi
+    done
+fi
+
+echo "$PWDir/bin/clean.sh" >> /etc/rc.local
+
 reboot
