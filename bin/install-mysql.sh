@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8" 
+export LANG="en_US.UTF-8"
 export PATH=$PATH
 PWDir=$(dirname $(cd $(dirname $0) ; pwd))
 version="56-5.6.22-rel71.0.el6.x86_64"
@@ -29,7 +29,7 @@ rpm -ivh $PWDir/Percona-Server-server-$version.rpm $PWDir/Percona-Server-client-
 /bin/cp -f $PWDir/conf/my.cnf /etc/my.cnf
 /usr/bin/mysql_install_db --defaults-file=/etc/my.cnf --user=mysql
 
-## 
+##
 chown -R mysql:mysql /data/mysql
 
 # 启动
@@ -43,3 +43,5 @@ sleep 10
 
 ## 开机启动：
 chkconfig --add mysql
+
+echo "\n ...... mysql 安装成功！\n"

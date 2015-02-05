@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8" 
+export LANG="en_US.UTF-8"
 export PATH=$PATH
 PWDir=$(dirname $(cd $(dirname $0) ; pwd))
 InstallDir=/opt/app/nginx
@@ -43,3 +43,5 @@ chkconfig --add nginx
 cd $PWDir
 rm -rf nginx-$version
 rm -rf $pcre
+
+echo "\n ...... nginx 安装成功！\n"

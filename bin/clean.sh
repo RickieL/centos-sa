@@ -2,7 +2,7 @@
 
 export LANG="en_US.UTF-8"
 export PATH=$PATH
-PWDir=$(cd $(dirname $0) ; pwd)
+PWDir=$(dirname $(cd $(dirname $0) ; pwd))
 ## 以root用户运行
 user=$(whoami)
 if [ $user != 'root' ] ; then
@@ -10,6 +10,6 @@ if [ $user != 'root' ] ; then
     exit 1;
 fi
 
-
-
-echo "\n ...... phpmyadmin 安装成功！\n"
+## 删除自动安装设置
+sed -i /sleep/d /etc/rc.local
+sed -i /clean.sh/d /etc/rc.local

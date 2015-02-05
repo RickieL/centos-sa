@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8" 
+export LANG="en_US.UTF-8"
 export PATH=$PATH
 PWDir=$(dirname $(cd $(dirname $0) ; pwd))
 ## 以root用户运行
@@ -21,7 +21,7 @@ sed -i -e 's/# anon-access = read/anon-access = none/' \
 -e 's/# auth-access = write/auth-access = write/' \
 -e 's/# password-db = passwd/password-db = passwd/' \
 -e 's/# realm = My First Repository/realm = svn/' \
-/data/svn/conf/svnserve.conf 
+/data/svn/conf/svnserve.conf
 
 
 ## 设置用户权限
@@ -38,3 +38,5 @@ svnserve -d -r /data/svn
 
 ## 开机启动
 echo "svnserve -d -r /data/svn" >> /etc/rc.local
+
+echo "\n ...... svn 安装配置成功！\n"
