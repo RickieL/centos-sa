@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8" 
+export LANG="en_US.UTF-8"
 export PATH=$PATH
-PWDir=$(cd $(dirname $0) ; pwd)
+
 
 ## 该脚本需要以root用户运行
 user=$(whoami)
@@ -10,6 +10,15 @@ if [ $user != 'root' ] ; then
     echo "该脚本需要以root用户运行, 当前用户为 $user"
     exit 1;
 fi
+
+## 获取github上的脚本
+rm -rf centos-sa
+yum -y install unzip wget
+wget https://github.com/RickieL/centos-sa/archive/master.zip
+unzip centos-sa
+cd centos-sa
+
+PWDir=$(pwd)
 
 ## 设置hostname到hosts文件
 echo "127.0.0.1  $HOSTNAME " >> /etc/hosts
@@ -22,8 +31,8 @@ sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
 ## 修改 ulimit 配置
-echo "* soft nofile 65535" >> /etc/security/limits.conf 
-echo "* hard nofile 65536" >> /etc/security/limits.conf 
+echo "* soft nofile 65535" >> /etc/security/limits.conf
+echo "* hard nofile 65536" >> /etc/security/limits.conf
 
 ## 修改 iptables 设置
 echo "# Firewall configuration written by system-config-firewall
@@ -46,7 +55,7 @@ COMMIT
 
 ## 新增普通用户
 id yongfu >/dev/null 2>&1
-if [ $? -ne 0 ] ; then 
+if [ $? -ne 0 ] ; then
     sudo useradd yongfu
     sudo sed  -i '98a yongfu   ALL=(ALL)   NOPASSWD: ALL' /etc/sudoers
 fi
@@ -54,15 +63,15 @@ fi
 ## 新建www用户
 id www >/dev/null 2>&1
 if [ $? -ne 0 ] ; then
-    groupadd  www -g 600  
-    useradd -g  www   -u 600  -s /sbin/nologin  www  
+    groupadd  www -g 600
+    useradd -g  www   -u 600  -s /sbin/nologin  www
 fi
 
 ## 新建mysql用户
 id mysql >/dev/null 2>&1
 if [ $? -ne 0 ] ; then
-    groupadd  mysql -g 27  
-    useradd -g  mysql   -u 27  -s /sbin/nologin  mysql  
+    groupadd  mysql -g 27
+    useradd -g  mysql   -u 27  -s /sbin/nologin  mysql
 fi
 
 ## 修改ssh配置
@@ -74,8 +83,8 @@ sed  -i -e 's/#PermitRootLogin yes/PermitRootLogin no/'  \
 ## 配置证书
 mkdir -p /home/yongfu/.ssh
 echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwQ4/fp7rU9G28RVyqr4v7nXz0aXPf4DGRKRbrXH+CxNChSv6OlyVWjIpRBbMosrvHP5jWSFXEFTWeqACTqmuPaLDwrjqJycIrSvocEpK0qYHEnOnT4SZoudYzV2E9gg8epTkfUv2C3WU8Mu/PgbXMokG077ZN4OgTe8rov7CDfRdPfaeU71woSahvAC5/dKAYemXzcmpBREJiowOQDYjuD177m5obuYvwiNuhPrFIPkzk0QZsGiLxW1gxfYxUsM3ebdVVeTNle6bnlXrlBcy/giNtoX/70KGkhFp5k3wyviTnp5EdiEGnSni+OqzPCkP7gqqTCVNACJk9kVwHkNU3 yongfu@yfmac.local' >> /home/yongfu/.ssh/authorized_keys
-chown yongfu:yongfu -R /home/yongfu/.ssh  
-chmod 700 /home/yongfu/.ssh  
+chown yongfu:yongfu -R /home/yongfu/.ssh
+chmod 700 /home/yongfu/.ssh
 chmod 600 /home/yongfu/.ssh/authorized_keys
 
 ## 标准化目录

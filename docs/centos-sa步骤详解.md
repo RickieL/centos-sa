@@ -1,6 +1,6 @@
 # centos6.6安装教程.md
 
-### 选择系统： 
+### 选择系统：
 centos 6.6   64位最小化安装ios镜像包
 `http://mirrors.aliyun.com/centos/6.6/isos/x86_64/CentOS-6.6-x86_64-minimal.iso`  
 说明: 服务器系统，安装的软件越少越好，minimal包最有383M。
@@ -19,7 +19,7 @@ centos 6.6   64位最小化安装ios镜像包
 > `NAT`: 只能单向访问，虚拟机可以通过网络访问到主机，主机无法通过网络访问到虚拟机。  
 > `网桥`: 桥接网络是指本地物理网卡和虚拟网卡通过VMnet0虚拟交换机进行桥接，物理网卡和虚拟网卡在拓扑图上处于同等地位，那么物理网卡和虚拟网卡就相当于处于同一个网段，虚拟交换机就相当于一台现实网络中的交换机,所以两个网卡的IP地址也要设置为同一网段。  
 > `Host Only`: 在Host-Only模式下，虚拟网络是一个全封闭的网络，它唯一能够访问的就是主机。
-     
+
 ### 系统配置
 - 配置系统语言
 
@@ -31,7 +31,7 @@ export LANG="en_US.UTF-8"
 sed -i 's/zh_CN.UTF-8/en_US.UTF-8/' /etc/sysconfig/i18n
 ```
 
-- 配置网络和网卡 
+- 配置网络和网卡
 
 > 主要有三个配置文件：  
  网卡配置: `/etc/sysconfig/network-scripts/ifcfg-ethx`  
@@ -39,7 +39,7 @@ sed -i 's/zh_CN.UTF-8/en_US.UTF-8/' /etc/sysconfig/i18n
  网络配置: `/etc/sysconfig/network`  
 
 ```
-** nat网卡   
+** nat网卡
 [yongfu@yf-cos ~]$ cat /etc/sysconfig/network-scripts/ifcfg-eth0
 DEVICE=eth0
 TYPE=Ethernet
@@ -84,20 +84,20 @@ GATEWAY=10.0.2.2
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
 
-说明： 
+说明：
 1. 有部分软件在selinux模式下安装会出现问题，尤其是编译安装的时候。
 2. 修改此参数重启生效, 测试命令： getenforce
 3. 在没关闭selinux的情况下，在启动 Percona mysql的时候也遇到权限问题
 ```
-   
+
 - 配置limits数  
 
-> 文件描述符在形式上是一个无符号整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于UNIX、Linux这样的操作系统。 
+> 文件描述符在形式上是一个无符号整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于UNIX、Linux这样的操作系统。
 >  
 > 标准输入（standard input）的文件描述符是 0  
 > 标准输出（standard output）是 1  
 > 标准错误（standard error）是 2  
-> 
+>
 > 尽管这种习惯并非Unix内核的特性，但是因为一些 shell 和很多应用程序都使用这种习惯，因此，如果内核不遵循这种习惯的话，很多应用程序将不能使用。
 
 ```
@@ -198,7 +198,7 @@ sed  -i -e 's/#PermitRootLogin yes/PermitRootLogin no/'  \
 ** 在配置iptables和ssh时要特别小心，不然很可能就导致自己无法远程登录了，修改必须谨慎。
 ```
 
-- 标准化目录   
+- 标准化目录
 
 ```
 mkdir -p /opt/app /data/www/test /data/logs/nginx /data/logs/php /tmp/phpsession /data/svnserver
@@ -208,7 +208,7 @@ chown mysql:mysql -R /data/mysql /var/lib/mysql /var/run/mysqld
 ```
 
 ### nmp安装篇
-#### 系统初始化软件包 
+#### 系统初始化软件包
 - 更新系统
 
 >	`yum update`  
@@ -216,16 +216,16 @@ chown mysql:mysql -R /data/mysql /var/lib/mysql /var/run/mysqld
 
 - 安装基础包
 
->   基础系统(不包括在最小系统包中，但又常用的软件):     
+>   基础系统(不包括在最小系统包中，但又常用的软件):
 >	`yum -y install curl wget  man vim yum-priorities ntpdate`
->	
+>
 >	编译依赖的软件  
 >	`yum -y install make gcc`
 
 - 安装epel源
 
 >	安装epel源(URL需按实际情况修改)
->  `rpm -Uvh http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm` 
+>  `rpm -Uvh http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm`
 >  
 >	查看是否安装成功  
 >	`rpm -q epel-release`  
@@ -234,7 +234,7 @@ chown mysql:mysql -R /data/mysql /var/lib/mysql /var/run/mysqld
 >	`rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6`  
 >
 >	修改yum优先级(先去官方源查，没有再去查epel源)
->  `sed -i '8a  priority=11' /etc/yum.repos.d/epel.repo` 
+>  `sed -i '8a  priority=11' /etc/yum.repos.d/epel.repo`
 >
 >	重建缓存  
 >	`yum makecache`
@@ -259,7 +259,7 @@ sed -i -e 's/# anon-access = read/anon-access = none/' \
 -e 's/# auth-access = write/auth-access = write/' \
 -e 's/# password-db = passwd/password-db = passwd/' \
 -e 's/# realm = My First Repository/realm = svn/' \
-/data/svn/conf/svnserve.conf 
+/data/svn/conf/svnserve.conf
 
 设置用户权限
 echo "
@@ -290,7 +290,7 @@ yum install -y zlib-devel openssl-devel  gcc-c++
 
 定义目录：
 CompileDir=/opt/LStarter
-AppInstallDir=/opt/app 
+AppInstallDir=/opt/app
 
 编译安装：
 cd $CompileDir
@@ -357,7 +357,7 @@ yum -y install zip unzip autoconf automake gcc gcc-c++ zlib-devel openssl openss
 
 tar xzf php-5.5.21.tar.gz
 cd php-5.5.21
-./configure  --prefix=/opt/app/php55 --with-mysql --with-pdo-mysql --with-mysqli --with-gd --with-zlib --enable-bcmath --enable-shmop --with-curl --enable-fpm --enable-mbstring --enable-gd-native-ttf --with-openssl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --with-mcrypt --with-libdir=lib64 --with-freetype-dir=/usr --with-png-dir=/usr --enable-sysvmsg --enable-sysvshm --enable-sysvsem --with-gmp --with-jpeg-dir=/usr --with-libxml-dir=/usr --disable-phar --enable-exif 
+./configure  --prefix=/opt/app/php55 --with-mysql --with-pdo-mysql --with-mysqli --with-gd --with-zlib --enable-bcmath --enable-shmop --with-curl --enable-fpm --enable-mbstring --enable-gd-native-ttf --with-openssl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --with-mcrypt --with-libdir=lib64 --with-freetype-dir=/usr --with-png-dir=/usr --enable-sysvmsg --enable-sysvshm --enable-sysvsem --with-gmp --with-jpeg-dir=/usr --with-libxml-dir=/usr --disable-phar --enable-exif
 make
 make install
 
@@ -365,7 +365,7 @@ make install
 /bin/cp -f sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
 chmod +x /etc/init.d/php-fpm
 chkconfig --add php-fpm
-/bin/cp -f /opt/LStarter/conf/php.ini /opt/app/php55/lib/php.ini 
+/bin/cp -f /opt/LStarter/conf/php.ini /opt/app/php55/lib/php.ini
 /bin/cp -f /opt/LStarter/conf/php-fpm.conf /opt/app/php55/etc/php-fpm.conf
 
 phpredis扩展
@@ -383,28 +383,4 @@ chkconfig --add php-fpm
 wget http://jaist.dl.sourceforge.net/project/phpmyadmin/phpMyAdmin/4.3.8/phpMyAdmin-4.3.8-all-languages.zip  
 unzip phpMyAdmin-4.3.8-all-languages.zip
 
-
-### todo-list
-- phpmyadmin
-- 安装脚本
-- √ 编译版，全部从线上下载软件包
-- ~~安装版，其中安装版不需要进行编译，直接rpm包安装~~ 
-- ~~默认配置到phpmyadmin
-- √ 参数选择安装需要的包
-- √ 分成2个脚本，系统初始化脚本和nmp安装脚本
-- vim的配置文件.vimrc
-- bashrc的配置
-- 应用打包脚本, 需要清理日志
-- 默认普通用户为： yongfu
-- 可自己配置用户  -u yongfu -k my-rsa-key.pub -p pass123 nginx mysql php svn pma
-- 也可以跳过用户设置和ssh配置, 为已经设置了普通用户和配置了ssh的用户准备  -s 
-
-
-// 在虚拟机中，如果解压的时候，出现时间戳错误，在还没安装ntpdate的情况下，先执行如下命令：  
-// DateTime=$(date +"%Y-%m-%d %H:%I:%S" -d "1 year")  
-// date -s "$DateTime"
-
-curl http://share.huikaiche.com/share/centos-sa-1.1.tar.gz  -o centos-sa-1.1.tar.gz  
-tar xzf centos-sa-1.1.tar.gz  
-cd centos-sa  
-
+rm -rf phpMyAdmin-4.3.8-all-languages
