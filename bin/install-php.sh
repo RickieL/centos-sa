@@ -18,8 +18,8 @@ sed -i /install-php.sh/d /etc/rc.local
 
 ## 解压文件
 cd $PWDir
-wget http://share.huikaiche.com/sa/php-$version.tar.gz
-wget http://share.huikaiche.com/sa/$phpredis.zip
+wget -q http://share.huikaiche.com/sa/php-$version.tar.gz
+wget -q http://share.huikaiche.com/sa/$phpredis.zip
 tar xzf php-$version.tar.gz
 unzip $phpredis.zip
 

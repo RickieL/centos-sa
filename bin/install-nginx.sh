@@ -19,8 +19,8 @@ sed -i /install-nginx.sh/d /etc/rc.local
 
 ## 解压文件
 cd $PWDir
-wget http://share.huikaiche.com/sa/nginx-$version.tar.gz
-wget http://share.huikaiche.com/sa/$pcre.tar.gz
+wget -q http://share.huikaiche.com/sa/nginx-$version.tar.gz
+wget -q http://share.huikaiche.com/sa/$pcre.tar.gz
 tar xzf nginx-$version.tar.gz
 tar xzf $pcre.tar.gz
 
