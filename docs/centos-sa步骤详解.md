@@ -184,7 +184,7 @@ useradd -g  mysql   -u 27  -s /sbin/nologin  mysql
 ```
 配置用户yongfu的证书登录:
 mkdir /home/yongfu/.ssh
-echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwQ4/fp7rU9G28RVyqr4v7nXz0aXPf4DGRKRbrXH+CxNChSv6OlyVWjIpRBbMosrvHP5jWSFXEFTWeqACTqmuPaLDwrjqJycIrSvocEpK0qYHEnOnT4SZoudYzV2E9gg8epTkfUv2C3WU8Mu/PgbXMokG077ZN4OgTe8rov7CDfRdPfaeU71woSahvAC5/dKAYemXzcmpBREJiowOQDYjuD177m5obuYvwiNuhPrFIPkzk0QZsGiLxW1gxfYxUsM3ebdVVeTNle6bnlXrlBcy/giNtoX/70KGkhFp5k3wyviTnp5EdiEGnSni+OqzPCkP7gqqTCVNACJk9kVwHkNU3 yongfu@yfmac.local' >> /home/yongfu/.ssh/authorized_keys
+echo 'ssh-rsa /giNtoX/70KGkhFp5k3wyviTnp5EdiEGnSni+OqzPCkP7gqqTCVNACJk9kVwHkNU3' >> /home/yongfu/.ssh/authorized_keys
 chown yongfu:yongfu -R /home/yongfu/.ssh  
 chmod 700 /home/yongfu/.ssh  
 chmod 644 /home/yongfu/.ssh/authorized_keys

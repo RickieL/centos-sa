@@ -34,8 +34,9 @@ COMMIT
 ## 新增普通用户
 id yongfu >/dev/null 2>&1
 if [ $? -ne 0 ] ; then
-    sudo useradd yongfu
-    sudo sed  -i '98a yongfu   ALL=(ALL)   NOPASSWD: ALL' /etc/sudoers
+    useradd yongfu
+    echo pass123 | passwd  -stdin yongfu   #设置用户密码
+    sed  -i '98a yongfu   ALL=(ALL)   NOPASSWD: ALL' /etc/sudoers
 fi
 
 ## 新建www用户
@@ -54,16 +55,9 @@ fi
 
 ## 修改ssh配置
 sed  -i -e 's/#PermitRootLogin yes/PermitRootLogin no/'  \
--e 's/PasswordAuthentication yes/PasswordAuthentication no/' \
 -e 's/#UseDNS yes/UseDNS no/' \
 /etc/ssh/sshd_config
 
-## 配置证书
-mkdir -p /home/yongfu/.ssh
-echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwQ4/fp7rU9G28RVyqr4v7nXz0aXPf4DGRKRbrXH+CxNChSv6OlyVWjIpRBbMosrvHP5jWSFXEFTWeqACTqmuPaLDwrjqJycIrSvocEpK0qYHEnOnT4SZoudYzV2E9gg8epTkfUv2C3WU8Mu/PgbXMokG077ZN4OgTe8rov7CDfRdPfaeU71woSahvAC5/dKAYemXzcmpBREJiowOQDYjuD177m5obuYvwiNuhPrFIPkzk0QZsGiLxW1gxfYxUsM3ebdVVeTNle6bnlXrlBcy/giNtoX/70KGkhFp5k3wyviTnp5EdiEGnSni+OqzPCkP7gqqTCVNACJk9kVwHkNU3 yongfu@yfmac.local' >> /home/yongfu/.ssh/authorized_keys
-chown yongfu:yongfu -R /home/yongfu/.ssh
-chmod 700 /home/yongfu/.ssh
-chmod 600 /home/yongfu/.ssh/authorized_keys
 
 ## 标准化目录
 mkdir -p /opt/app /data/www/test /data/logs/nginx /data/logs/php /tmp/phpsession /data/svnserver

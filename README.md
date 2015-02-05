@@ -17,7 +17,7 @@ curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh |
 - 默认bashrc配置
 - √ 应用打包脚本, 需要清理日志
 - √ 默认普通用户为： yongfu
-- 可自己配置用户  -u yongfu -k my-rsa-key.pub -p pass123
+- 可自己配置用户  -u yongfu -p pass123
 - 也可以跳过用户设置和ssh配置, 为已经设置了普通用户和配置了ssh的用户准备  -s
 - 全局配置文件
 
