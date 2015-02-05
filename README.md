@@ -3,7 +3,7 @@ centos系统初始化及nmp一键安装脚本
 
 ## 安装
 ```
-curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/sys-init.sh | sh -s nginx mysql php svn
+curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh | sh -s nginx mysql php svn
 ```
 
 ## todo-list

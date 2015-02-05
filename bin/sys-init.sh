@@ -72,7 +72,6 @@ chown www:www -R /data/www/test  /data/logs /tmp/phpsession
 mkdir -p /data/mysql /var/lib/mysql /var/run/mysqld
 chown -R mysql:mysql /data/mysql  /var/lib/mysql /var/run/mysqld
 
-
 # 根据对应的参数，重启后自动安装
 if [ $# -ne 0 ]; then
     arg=$@

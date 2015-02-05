@@ -10,18 +10,6 @@ fi
 export LANG="en_US.UTF-8"
 export PATH=$PATH
 
-## 获取github上的脚本
-rm -rf centos-sa-master
-yum -y install unzip wget
-wget https://github.com/RickieL/centos-sa/archive/master.zip
-unzip master.zip
-rm -f master.zip
-cd centos-sa-master
-
-PWDir=$(pwd)
-
-mkdir $PWDir/logs
-
 ## 设置hostname到hosts文件
 echo "127.0.0.1  $HOSTNAME " >> /etc/hosts
 
@@ -48,11 +36,22 @@ yum makecache
 ## 基础环境软件
 yum -y install curl wget man vim yum-priorities ntpdate make gcc subversion zlib-devel openssl-devel  gcc-c++ zip unzip autoconf automake openssl pcre-devel gd compat-glibc compat-glibc-headers cpp freetype freetype-devel libjpeg libjpeg-devel  libpng libpng-devel ncurses ncurses-devel libtool libtool-ltdl libtool-ltdl-devel  libxml2 libxml2-devel curl-devel curl libcurl-devel bison flex gmp gmp-devel bzip2-devel file libXpm libXpm-devel re2c libmcrypt-devel.x86_64 libmcrypt.x86_64 rsync git
 
-
 ## ntp时间同步
 echo '10 7 * * * /usr/sbin/ntpdate cn.pool.ntp.org' >> /var/spool/cron/root
 /usr/sbin/ntpdate cn.pool.ntp.org >/dev/null 2>&1
 
-sleep 3
+sleep 2
 
+## 获取github上的脚本
+rm -rf centos-sa-master
+wget https://github.com/RickieL/centos-sa/archive/master.zip
+unzip master.zip
+cd centos-sa-master
+
+PWDir=$(pwd)
+
+mkdir $PWDir/logs
+chmod +x $PWDir/bin/*
+
+## 具体的安装配置选项
 $PWDir/bin/sys-init.sh $@
