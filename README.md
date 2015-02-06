@@ -37,9 +37,3 @@ curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh |
 - √ 可自己配置用户  -u myname -p mypass
 - ~~也可以跳过用户设置和ssh配置, 为已经设置了普通用户和配置了ssh的用户准备~~
 - √ 全局配置文件 bin/confile, 由gen-confile.sh生成
-
-## 注意事项
-// 在虚拟机中，如果解压的时候，出现时间戳错误
-// 在还没安装ntpdate的情况下，这样设置时间：  
-DateTime=$(date +"%Y-%m-%d %H:%I:%S" -d "1 year")  
-date -s "$DateTime"
