@@ -20,14 +20,18 @@ sed -i /install-mysql.sh/d /etc/rc.local
 cd $PWDir
 
 ## 下载软件包
-wget -q http://share.huikaiche.com/sa/Percona-Server-client-$version.rpm
-wget -q http://share.huikaiche.com/sa/Percona-Server-server-$version.rpm
-wget -q http://share.huikaiche.com/sa/Percona-Server-shared-$version.rpm
+if [ ! -f Percona-Server-client-$version.rpm ]; then
+    wget -q http://share.huikaiche.com/sa/Percona-Server-client-$version.rpm
+fi
+if [ ! -f Percona-Server-server-$version.rpm ]; then
+    wget -q http://share.huikaiche.com/sa/Percona-Server-server-$version.rpm
+fi
+if [ ! -f Percona-Server-shared-$version.rpm ]; then
+    wget -q http://share.huikaiche.com/sa/Percona-Server-shared-$version.rpm
+fi
 
 ## 安装
-if [ -f $PWDir/Percona-Server-shared-$version.rpm ]; then
-    rpm -ivh $PWDir/Percona-Server-server-$version.rpm $PWDir/Percona-Server-client-$version.rpm     $PWDir/Percona-Server-shared-$version.rpm
-fi
+rpm -ivh $PWDir/Percona-Server-server-$version.rpm $PWDir/Percona-Server-client-$version.rpm     $PWDir/Percona-Server-shared-$version.rpm
 
 ## 配置
 /bin/cp -f $PWDir/conf/my.cnf /etc/my.cnf

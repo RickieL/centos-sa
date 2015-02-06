@@ -27,8 +27,12 @@ sed -i /install-nginx.sh/d /etc/rc.local
 
 ## 解压文件
 cd $PWDir
-wget -q http://share.huikaiche.com/sa/nginx-$version.tar.gz
-wget -q http://share.huikaiche.com/sa/$pcre.tar.gz
+if [ ! -f nginx-$version.tar.gz ]; then
+    wget -q http://share.huikaiche.com/sa/nginx-$version.tar.gz
+fi
+if [ ! -f $pcre.tar.gz ]; then
+    wget -q http://share.huikaiche.com/sa/$pcre.tar.gz
+fi
 tar xzf nginx-$version.tar.gz
 tar xzf $pcre.tar.gz
 
@@ -47,9 +51,15 @@ chmod +x /etc/init.d/nginx
 ## 开机启动：
 chkconfig --add nginx
 
+## 当iptable没有设置时，在此设置
+grep '--dport 80 ' /etc/sysconfig/iptables >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    sed -i '10a -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT' /etc/sysconfig/iptables
+fi
+
 ## 删除解压缩文件
 cd $PWDir
 rm -rf nginx-$version
 rm -rf $pcre
 
-echo "\n ...... nginx 安装成功！\n"
+echo "nginx 安装成功!"

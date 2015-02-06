@@ -45,6 +45,12 @@ echo "$V_USER = $V_PASS" >> /data/svn/conf/passwd
 ## 启动svn
 svnserve -d -r /data/svn
 
+## 当iptable没有设置时，在此设置
+grep '--dport 3690' /etc/sysconfig/iptables >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    sed -i '10a -A INPUT -m state --state NEW -m tcp -p tcp --dport 3690 -j ACCEPT' /etc/sysconfig/iptables
+fi
+
 ## 开机启动
 echo "svnserve -d -r /data/svn" >> /etc/rc.local
 

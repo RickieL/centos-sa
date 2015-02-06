@@ -7,7 +7,7 @@ centos系统初始化及nmp一键安装脚本
 curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh | sh -s " -N -M -P "
 
 自定义安装：
-curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh | sh -s " -u myname -p mypass -N -M -P -S "
+curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh | sh -s " -u myname -p mypass -N -M -P -S -A"
 
 其中:
 -u 指定用户名
@@ -22,7 +22,7 @@ curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh |
 ```
 
 ## todo-list
-- phpmyadmin
+- √ phpmyadmin
 - √ 安装脚本
 - √ 编译版，全部从线上下载软件包
 - ~~安装版，其中安装版不需要进行编译，直接rpm包安装~~
