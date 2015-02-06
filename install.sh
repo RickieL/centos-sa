@@ -10,20 +10,6 @@ fi
 export LANG="en_US.UTF-8"
 export PATH=$PATH
 
-## 设置hostname到hosts文件
-echo "127.0.0.1  $HOSTNAME " >> /etc/hosts
-
-## 语言设置为英文
-sed -i 's/zh_CN.UTF-8/en_US.UTF-8/' /etc/sysconfig/i18n
-
-## 关闭selinux
-sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
-sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
-
-## 修改 ulimit 配置
-echo "* soft nofile 65535" >> /etc/security/limits.conf
-echo "* hard nofile 65536" >> /etc/security/limits.conf
-
 ## 更新系统
 yum -y update
 
@@ -37,8 +23,22 @@ yum makecache
 yum -y install curl wget man vim yum-priorities ntpdate make gcc subversion zlib-devel openssl-devel  gcc-c++ zip unzip autoconf automake openssl pcre-devel gd compat-glibc compat-glibc-headers cpp freetype freetype-devel libjpeg libjpeg-devel  libpng libpng-devel ncurses ncurses-devel libtool libtool-ltdl libtool-ltdl-devel  libxml2 libxml2-devel curl-devel curl libcurl-devel bison flex gmp gmp-devel bzip2-devel file libXpm libXpm-devel re2c libmcrypt-devel.x86_64 libmcrypt.x86_64 rsync git
 
 ## ntp时间同步
-echo '10 7 * * * /usr/sbin/ntpdate cn.pool.ntp.org' >> /var/spool/cron/root
+echo '10 * * * * /usr/sbin/ntpdate cn.pool.ntp.org >/dev/null 2>&1' >> /var/spool/cron/root
 /usr/sbin/ntpdate cn.pool.ntp.org >/dev/null 2>&1
+
+## 设置hostname到hosts文件
+echo "127.0.0.1  $HOSTNAME " >> /etc/hosts
+
+## 语言设置为英文
+sed -i 's/zh_CN.UTF-8/en_US.UTF-8/' /etc/sysconfig/i18n
+
+## 关闭selinux
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
+## 修改 ulimit 配置
+echo "* soft nofile 65535" >> /etc/security/limits.conf
+echo "* hard nofile 65536" >> /etc/security/limits.conf
 
 sleep 2
 
