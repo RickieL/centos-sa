@@ -9,8 +9,8 @@ else
     exit 1
 fi
 
-export $LANG
-export $PATH
+export LANG=$LANG
+export PATH=$PATH
 
 ## 以root用户运行
 user=$(whoami)

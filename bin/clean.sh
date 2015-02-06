@@ -1,8 +1,19 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8"
-export PATH=$PATH
-CsaDir=$($(dirname $(dirname $0)))
+CurDir=$(dirname $0)
+
+if [ -f $CurDir/confile ]; then
+    source $CurDir/confile
+else
+    echo "配置文件没有生成，请检查！"
+    exit 1
+fi
+
+export $LANG
+export $PATH
+
+CsaDir=$(dirname $PWDir)
+
 ## 以root用户运行
 user=$(whoami)
 if [ $user != 'root' ] ; then

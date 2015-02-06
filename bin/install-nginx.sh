@@ -8,8 +8,8 @@ else
     exit 1
 fi
 
-export $LANG
-export $PATH
+export LANG=$LANG
+export PATH=$PATH
 
 InstallDir=/opt/app/nginx
 version=1.6.2

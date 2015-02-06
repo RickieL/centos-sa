@@ -8,8 +8,8 @@ else
     exit 1
 fi
 
-export $LANG
-export $PATH
+export LANG=$LANG
+export PATH=$PATH
 
 ## 修改 iptables 设置
 echo "# Firewall configuration written by system-config-firewall
@@ -36,13 +36,13 @@ fi
 if [ $V_SVN == 'y' ]; then
     sed -i '10a -A INPUT -m state --state NEW -m tcp -p tcp --dport 3690 -j ACCEPT' /etc/sysconfig/iptables
 fi
-
+ll
 
 ## 新增普通用户
 id $V_USER >/dev/null 2>&1
 if [ $? -ne 0 ] ; then
     useradd $V_USER
-    echo $V_PASS | passwd  -stdin $V_USER   #设置用户密码
+    echo $V_PASS | passwd --stdin $V_USER   #设置用户密码
     sed  -i "98a $V_USER   ALL=(ALL)   NOPASSWD: ALL" /etc/sudoers
 fi
 
