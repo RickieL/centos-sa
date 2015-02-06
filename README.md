@@ -21,8 +21,6 @@ curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh |
 不需要安装的项目，去掉其选项就可以，如上的命令，去掉了phpMyAdmin的安装
 ```
 
-
-
 ## todo-list
 - phpmyadmin
 - √ 安装脚本
