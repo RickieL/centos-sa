@@ -54,4 +54,5 @@ mkdir $PWDir/logs
 chmod +x $PWDir/bin/*
 
 ## 具体的安装配置选项
-$PWDir/bin/sys-init.sh $@
+$PWDir/bin/gen-confile.sh $@
+$PWDir/bin/sys-init.sh

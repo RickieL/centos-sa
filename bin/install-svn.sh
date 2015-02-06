@@ -1,8 +1,17 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8"
-export PATH=$PATH
-PWDir=$(dirname $(cd $(dirname $0) ; pwd))
+
+CurDir=$(dirname $0)
+if [ -f $CurDir/confile ]; then
+    source $CurDir/confile
+else
+    echo "配置文件没有生成，请检查！"
+    exit 1
+fi
+
+export $LANG
+export $PATH
+
 ## 以root用户运行
 user=$(whoami)
 if [ $user != 'root' ] ; then
@@ -27,11 +36,11 @@ sed -i -e 's/# anon-access = read/anon-access = none/' \
 ## 设置用户权限
 echo "
 [/]
-yongfu = rw
+$V_USER = rw
 * = r " >> /data/svn/conf/authz
 
 ## 设置用户密码
-echo "yongfu = pass123" >> /data/svn/conf/passwd
+echo "$V_USER = $V_PASS" >> /data/svn/conf/passwd
 
 ## 启动svn
 svnserve -d -r /data/svn

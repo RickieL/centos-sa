@@ -1,15 +1,17 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8"
-export PATH=$PATH
-PWDir=$(dirname $(cd $(dirname $0) ; pwd))
-version="56-5.6.22-rel71.0.el6.x86_64"
-## 以root用户运行
-user=$(whoami)
-if [ $user != 'root' ] ; then
-    echo "该脚本需要以root用户运行, 当前用户为 $user"
-    exit 1;
+CurDir=$(dirname $0)
+if [ -f $CurDir/confile ]; then
+    source $CurDir/confile
+else
+    echo "配置文件没有生成，请检查！"
+    exit 1
 fi
+
+export $LANG
+export $PATH
+
+version="56-5.6.22-rel71.0.el6.x86_64"
 
 ## 删除自动安装设置
 sed -i /install-mysql.sh/d /etc/rc.local
@@ -39,9 +41,9 @@ chown -R mysql:mysql /data/mysql
 sleep 10
 
 /usr/bin/mysql -u root  -e "delete from mysql.user where user=''" &>/dev/null
-/usr/bin/mysqladmin -u root password "pass123"  &>/dev/null
-/usr/bin/mysqladmin -u root -h 127.0.0.1 password "pass123" &>/dev/null
-/usr/bin/mysql -u root -ppass123 -e "delete from mysql.user where password=''" &>/dev/null
+/usr/bin/mysqladmin -u root password "$V_PASS"  &>/dev/null
+/usr/bin/mysqladmin -u root -h 127.0.0.1 password "$V_PASS" &>/dev/null
+/usr/bin/mysql -u root -p$V_PASS -e "delete from mysql.user where password=''" &>/dev/null
 
 ## 开机启动：
 chkconfig --add mysql

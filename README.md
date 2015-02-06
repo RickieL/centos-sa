@@ -3,8 +3,25 @@ centos系统初始化及nmp一键安装脚本
 
 ## 安装
 ```
-curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh | sh -s nginx mysql php svn
+默认安装：
+curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh | sh -s " -N -M -P "
+
+自定义安装：
+curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh | sh -s " -u myname -p mypass -N -M -P -S "
+
+其中:
+-u 指定用户名
+-p 指定密码
+-N 表示安装nginx
+-M 表示安装MySQL
+-P 表示安装php
+-A 表示安装phpMyAdmin
+-S 表示安装svn
+
+不需要安装的项目，去掉其选项就可以，如上的命令，去掉了phpMyAdmin的安装
 ```
+
+
 
 ## todo-list
 - phpmyadmin
@@ -16,10 +33,10 @@ curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh |
 - 默认vim的配置文件
 - 默认bashrc配置
 - √ 应用打包脚本, 需要清理日志
-- √ 默认普通用户为： yongfu
-- 可自己配置用户  -u yongfu -p pass123
-- 也可以跳过用户设置和ssh配置, 为已经设置了普通用户和配置了ssh的用户准备  -s
-- 全局配置文件
+- √ 默认普通用户为： yongfu 默认密码：pass123
+- √ 可自己配置用户  -u myname -p mypass
+- ~~也可以跳过用户设置和ssh配置, 为已经设置了普通用户和配置了ssh的用户准备~~
+- √ 全局配置文件 bin/confile, 由gen-confile.sh生成
 
 ## 注意事项
 // 在虚拟机中，如果解压的时候，出现时间戳错误

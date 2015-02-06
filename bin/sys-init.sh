@@ -1,16 +1,15 @@
 #!/bin/bash
 
-## 该脚本需要以root用户运行
-user=$(whoami)
-if [ $user != 'root' ] ; then
-    echo "该脚本需要以root用户运行, 当前用户为 $user"
-    exit 1;
+CurDir=$(dirname $0)
+if [ -f $CurDir/confile ]; then
+    source $CurDir/confile
+else
+    echo "配置文件没有生成，请检查！"
+    exit 1
 fi
 
-export LANG="en_US.UTF-8"
-export PATH=$PATH
-
-PWDir=$(dirname $(cd $(dirname $0) ; pwd))
+export $LANG
+export $PATH
 
 ## 修改 iptables 设置
 echo "# Firewall configuration written by system-config-firewall
@@ -23,20 +22,28 @@ echo "# Firewall configuration written by system-config-firewall
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
--A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT
--A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
--A INPUT -m state --state NEW -m tcp -p tcp --dport 3690 -j ACCEPT
 -A INPUT -j REJECT --reject-with icmp-host-prohibited
 -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 COMMIT
 " > /etc/sysconfig/iptables
 
+if [ $V_NGINX == 'y' ]; then
+    sed -i '10a -A INPUT -m state --state NEW -m tcp -p tcp --dport 80 -j ACCEPT' /etc/sysconfig/iptables
+fi
+if [ $V_PMA == 'y' ]; then
+    sed -i '10a -A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT' /etc/sysconfig/iptables
+fi
+if [ $V_SVN == 'y' ]; then
+    sed -i '10a -A INPUT -m state --state NEW -m tcp -p tcp --dport 3690 -j ACCEPT' /etc/sysconfig/iptables
+fi
+
+
 ## 新增普通用户
-id yongfu >/dev/null 2>&1
+id $V_USER >/dev/null 2>&1
 if [ $? -ne 0 ] ; then
-    useradd yongfu
-    echo pass123 | passwd  -stdin yongfu   #设置用户密码
-    sed  -i '98a yongfu   ALL=(ALL)   NOPASSWD: ALL' /etc/sudoers
+    useradd $V_USER
+    echo $V_PASS | passwd  -stdin $V_USER   #设置用户密码
+    sed  -i "98a $V_USER   ALL=(ALL)   NOPASSWD: ALL" /etc/sudoers
 fi
 
 ## 新建www用户
@@ -67,15 +74,25 @@ mkdir -p /data/mysql /var/lib/mysql /var/run/mysqld
 chown -R mysql:mysql /data/mysql  /var/lib/mysql /var/run/mysqld
 
 # 根据对应的参数，重启后自动安装
-if [ $# -ne 0 ]; then
-    arg=$@
-    for i in $arg
-    do
-        if [ -f $PWDir/bin/install-$i.sh ] ; then
-            echo "$PWDir/bin/install-$i.sh >$PWDir/logs/$i.log 2>$PWDir/logs/$i.err & " >> /etc/rc.local
-            echo "sleep 2"  >> /etc/rc.local
-        fi
-    done
+if [ $V_NGINX == 'y' ]; then
+    echo "$PWDir/bin/install-nginx.sh >$PWDir/logs/nginx.log 2>$PWDir/logs/nginx.err & " >> /etc/rc.local
+    echo "sleep 2"  >> /etc/rc.local
+if
+if [ $V_MYSQL == 'y' ]; then
+    echo "$PWDir/bin/install-mysql.sh >$PWDir/logs/mysql.log 2>$PWDir/logs/mysql.err & " >> /etc/rc.local
+    echo "sleep 2"  >> /etc/rc.local
+fi
+if [ $V_PHP == 'y' ]; then
+    echo "$PWDir/bin/install-php.sh >$PWDir/logs/php.log 2>$PWDir/logs/php.err & " >> /etc/rc.local
+    echo "sleep 2"  >> /etc/rc.local
+fi
+if [ $V_PMA == 'y' ]; then
+    echo "$PWDir/bin/install-pma.sh >$PWDir/logs/pma.log 2>$PWDir/logs/pma.err & " >> /etc/rc.local
+    echo "sleep 2"  >> /etc/rc.local
+fi
+if [ $V_SVN == 'y' ]; then
+    echo "$PWDir/bin/install-svn.sh >$PWDir/logs/svn.log 2>$PWDir/logs/svn.err & " >> /etc/rc.local
+    echo "sleep 2"  >> /etc/rc.local
 fi
 
 echo "$PWDir/bin/clean.sh" >> /etc/rc.local

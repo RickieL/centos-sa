@@ -1,8 +1,16 @@
 #!/bin/bash
 
-export LANG="en_US.UTF-8"
-export PATH=$PATH
-PWDir=$(dirname $(cd $(dirname $0) ; pwd))
+CurDir=$(dirname $0)
+if [ -f $CurDir/confile ]; then
+    source $CurDir/confile
+else
+    echo "配置文件没有生成，请检查！"
+    exit 1
+fi
+
+export $LANG
+export $PATH
+
 InstallDir=/opt/app/nginx
 version=1.6.2
 pcre=pcre-8.36
