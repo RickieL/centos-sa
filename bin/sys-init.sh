@@ -36,7 +36,6 @@ fi
 if [ $V_SVN == 'y' ]; then
     sed -i '10a -A INPUT -m state --state NEW -m tcp -p tcp --dport 3690 -j ACCEPT' /etc/sysconfig/iptables
 fi
-ll
 
 ## 新增普通用户
 id $V_USER >/dev/null 2>&1
@@ -65,7 +64,6 @@ sed  -i -e 's/#PermitRootLogin yes/PermitRootLogin no/'  \
 -e 's/#UseDNS yes/UseDNS no/' \
 /etc/ssh/sshd_config
 
-
 ## 标准化目录
 mkdir -p /opt/app /data/www/test /data/logs/nginx /data/logs/php /tmp/phpsession /data/svnserver
 chown www:www -R /data/www/test  /data/logs /tmp/phpsession
@@ -77,7 +75,7 @@ chown -R mysql:mysql /data/mysql  /var/lib/mysql /var/run/mysqld
 if [ $V_NGINX == 'y' ]; then
     echo "$PWDir/bin/install-nginx.sh >$PWDir/logs/nginx.log 2>$PWDir/logs/nginx.err & " >> /etc/rc.local
     echo "sleep 2"  >> /etc/rc.local
-if
+fi
 if [ $V_MYSQL == 'y' ]; then
     echo "$PWDir/bin/install-mysql.sh >$PWDir/logs/mysql.log 2>$PWDir/logs/mysql.err & " >> /etc/rc.local
     echo "sleep 2"  >> /etc/rc.local
