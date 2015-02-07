@@ -357,18 +357,16 @@ sleep 8
 wget http://cn2.php.net/distributions/php-5.5.21.tar.gz
 wget https://github.com/phpredis/phpredis/archive/2.2.7.zip -O phpredis-2.2.7.zip
 
-yum -y install zip unzip autoconf automake gcc gcc-c++ zlib-devel openssl openssl-devel pcre-devel gd     compat-glibc compat-glibc-headers cpp freetype freetype-devel libjpeg libjpeg-devel  libpng libpng-devel ncurses ncurses-devel libtool libtool-ltdl libtool-ltdl-devel  libxml2 libxml2-devel curl-devel curl libcurl-devel bison flex gmp gmp-devel bzip2-devel file libXpm libXpm-devel re2c libmcrypt-devel.x86_64 libmcrypt.x86_64
+yum -y install zip unzip autoconf automake gcc gcc-c++ zlib-devel openssl openssl-devel pcre-devel gd     compat-glibc compat-glibc-headers cpp freetype freetype-devel libjpeg libjpeg-devel  libpng libpng-devel ncurses ncurses-devel libtool libtool-ltdl libtool-ltdl-devel  libxml2 libxml2-devel curl-devel libcurl-devel bison flex gmp gmp-devel bzip2-devel file libXpm libXpm-devel re2c libmcrypt-devel.x86_64 libmcrypt.x86_64 
 
 tar xzf php-5.5.21.tar.gz
 cd php-5.5.21
-./configure  --prefix=/opt/app/php55 --with-mysql --with-pdo-mysql --with-mysqli --with-gd --with-zlib --enable-bcmath --enable-shmop --with-curl --enable-fpm --enable-mbstring --enable-gd-native-ttf --with-openssl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --with-mcrypt --with-libdir=lib64 --with-freetype-dir=/usr --with-png-dir=/usr --enable-sysvmsg --enable-sysvshm --enable-sysvsem --with-gmp --with-jpeg-dir=/usr --with-libxml-dir=/usr --disable-phar --enable-exif
-make
-make install
+./configure  --prefix=/opt/app/php55 --with-mysql --with-pdo-mysql --with-mysqli --with-gd --with-zlib --enable-bcmath --enable-shmop --with-curl --enable-fpm --enable-mbstring --enable-gd-native-ttf --with-openssl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --with-mcrypt --with-libdir=lib64 --with-freetype-dir=/usr --with-png-dir=/usr --enable-sysvmsg --enable-sysvshm --enable-sysvsem --with-gmp --with-jpeg-dir=/usr --with-libxml-dir=/usr --disable-phar --enable-exif --with-bz2
+make && make install
 
 配置php：
 /bin/cp -f sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
 chmod +x /etc/init.d/php-fpm
-chkconfig --add php-fpm
 /bin/cp -f /opt/LStarter/conf/php.ini /opt/app/php55/lib/php.ini
 /bin/cp -f /opt/LStarter/conf/php-fpm.conf /opt/app/php55/etc/php-fpm.conf
 
