@@ -28,8 +28,8 @@ curl -sk https://raw.githubusercontent.com/RickieL/centos-sa/master/install.sh |
 - ~~安装版，其中安装版不需要进行编译，直接rpm包安装~~
 - √ 参数选择安装需要的包  nginx mysql php svn pma
 - √ 分成2个脚本，系统初始化脚本和nmp安装脚本
-- 默认vim的配置文件
-- 默认bashrc配置
+- ~~默认vim的配置文件~~ （每个人需求不一样，系统默认配置适合当前使用）
+- ~~默认bashrc配置~~ （每个人需求不一样，系统默认配置适合当前使用）
 - √ 应用打包脚本, 需要清理日志
 - √ 默认普通用户为： yongfu 默认密码：pass123
 - √ 可自己配置用户  -u myname -p mypass
