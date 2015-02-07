@@ -11,6 +11,7 @@ export LANG="en_US.UTF-8"
 export PATH=$PATH
 
 ## 更新系统
+echo "[0]正在进行系统更新...."
 yum -y update >/dev/null 2>&1
 echo "[1]已更新系统到最新"
 
