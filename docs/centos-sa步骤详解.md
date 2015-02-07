@@ -182,6 +182,10 @@ useradd -g  mysql   -u 27  -s /sbin/nologin  mysql
 - 配置ssh，配置文件及证书
 
 ```
+在本地机器生成公私钥：
+ssh-keygen -t rsa -b 2048
+
+在远程机器创建.ssh目录和authorized_keys文件，特别注意目录和文件权限。
 配置用户yongfu的证书登录:
 mkdir /home/yongfu/.ssh
 echo 'ssh-rsa /giNtoX/70KGkhFp5k3wyviTnp5EdiEGnSni+OqzPCkP7gqqTCVNACJk9kVwHkNU3' >> /home/yongfu/.ssh/authorized_keys
