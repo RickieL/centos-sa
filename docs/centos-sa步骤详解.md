@@ -3,7 +3,7 @@
 ### 选择系统：
 centos 6.6   64位最小化安装ios镜像包
 `http://mirrors.aliyun.com/centos/6.6/isos/x86_64/CentOS-6.6-x86_64-minimal.iso`  
-说明: 服务器系统，安装的软件越少越好，minimal包最有383M。
+说明: 服务器系统，安装的软件越少越好，minimal包383M。
 
 ### 系统安装
 - 内存要求  
@@ -83,12 +83,12 @@ GATEWAY=10.0.2.2
 ```
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
-
-说明：
-1. 有部分软件在selinux模式下安装会出现问题，尤其是编译安装的时候。
-2. 修改此参数重启生效, 测试命令： getenforce
-3. 在没关闭selinux的情况下，在启动 Percona mysql的时候也遇到权限问题
 ```
+
+> 说明：
+> 1. 有部分软件在selinux模式下安装会出现问题，尤其是编译安装的时候。
+> 2. 修改此参数重启生效, 测试命令： getenforce
+> 3. 在没关闭selinux的情况下，在启动 Percona mysql的时候也遇到权限问题
 
 - 配置limits数  
 
@@ -123,6 +123,7 @@ file locks                      (-x) unlimited
 执行如下命令：
 echo '* soft nofile 65535' >> /etc/security/limits.conf
 echo '* hard nofile 65536' >> /etc/security/limits.conf
+```
 
 说明：
 1. 突破文件描述符默认为1024的限制
@@ -182,6 +183,10 @@ useradd -g  mysql   -u 27  -s /sbin/nologin  mysql
 - 配置ssh，配置文件及证书
 
 ```
+在本地机器生成公私钥：
+ssh-keygen -t rsa -b 2048
+
+在远程机器创建.ssh目录和authorized_keys文件，特别注意目录和文件权限。
 配置用户yongfu的证书登录:
 mkdir /home/yongfu/.ssh
 echo 'ssh-rsa /giNtoX/70KGkhFp5k3wyviTnp5EdiEGnSni+OqzPCkP7gqqTCVNACJk9kVwHkNU3' >> /home/yongfu/.ssh/authorized_keys
@@ -201,8 +206,8 @@ sed  -i -e 's/#PermitRootLogin yes/PermitRootLogin no/'  \
 - 标准化目录
 
 ```
-mkdir -p /opt/app /data/www/test /data/logs/nginx /data/logs/php /tmp/phpsession /data/svnserver
-chown www:www -R /data/www/test  /data/logs /tmp/phpsession
+mkdir -p /opt/app /data/www/test /data/logs/nginx /data/logs/php
+chown www:www -R /data/www/test  /data/logs 
 mkdir -p /data/mysql /var/lib/mysql /var/run/mysqld
 chown mysql:mysql -R /data/mysql /var/lib/mysql /var/run/mysqld
 ```
@@ -278,6 +283,10 @@ echo "svnserve -d -r /data/svn" >> /etc/rc.local
 ```
 
 ### 安装nmp
+定义目录：
+CompileDir=/opt/LStarter
+AppInstallDir=/opt/app
+
 - 编译安装nginx
 
 ```
@@ -288,14 +297,10 @@ wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.36.tar.gz
 解决依赖：
 yum install -y zlib-devel openssl-devel  gcc-c++
 
-定义目录：
-CompileDir=/opt/LStarter
-AppInstallDir=/opt/app
-
 编译安装：
 cd $CompileDir
-tar xzf http://nginx.org/download/nginx-1.6.2.tar.gz
-cd $CompileDir/nginx-1.6.2
+tar xzf nginx-1.6.2.tar.gz
+cd nginx-1.6.2
 ./configure --prefix=$AppInstallDir/nginx --user=www --group=www --with-http_stub_status_module --with-openssl=/usr/ --with-pcre=$CompileDir/pcre-8.36
 make
 make install
@@ -335,7 +340,7 @@ rpm -ivh Percona-Server-server-56-5.6.22-rel71.0.el6.x86_64.rpm Percona-Server-c
 切记：需关闭selinux，或做好selinux的策略
 
 配置：
-/bin/cp -f /opt/LStarter/conf/my.cnf /etc/my.cnf
+/bin/cp -f $CompileDir/conf/my.cnf /etc/my.cnf
 /usr/bin/mysql_install_db
 
 /etc/init.d/mysql start
@@ -353,26 +358,24 @@ sleep 8
 wget http://cn2.php.net/distributions/php-5.5.21.tar.gz
 wget https://github.com/phpredis/phpredis/archive/2.2.7.zip -O phpredis-2.2.7.zip
 
-yum -y install zip unzip autoconf automake gcc gcc-c++ zlib-devel openssl openssl-devel pcre-devel gd     compat-glibc compat-glibc-headers cpp freetype freetype-devel libjpeg libjpeg-devel  libpng libpng-devel ncurses ncurses-devel libtool libtool-ltdl libtool-ltdl-devel  libxml2 libxml2-devel curl-devel curl libcurl-devel bison flex gmp gmp-devel bzip2-devel file libXpm libXpm-devel re2c libmcrypt-devel.x86_64 libmcrypt.x86_64
+yum -y install zip unzip autoconf automake gcc gcc-c++ zlib-devel openssl openssl-devel pcre-devel gd     compat-glibc compat-glibc-headers cpp freetype freetype-devel libjpeg libjpeg-devel  libpng libpng-devel ncurses ncurses-devel libtool libtool-ltdl libtool-ltdl-devel  libxml2 libxml2-devel curl-devel libcurl-devel bison flex gmp gmp-devel bzip2-devel file libXpm libXpm-devel re2c libmcrypt-devel.x86_64 libmcrypt.x86_64 
 
 tar xzf php-5.5.21.tar.gz
 cd php-5.5.21
-./configure  --prefix=/opt/app/php55 --with-mysql --with-pdo-mysql --with-mysqli --with-gd --with-zlib --enable-bcmath --enable-shmop --with-curl --enable-fpm --enable-mbstring --enable-gd-native-ttf --with-openssl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --with-mcrypt --with-libdir=lib64 --with-freetype-dir=/usr --with-png-dir=/usr --enable-sysvmsg --enable-sysvshm --enable-sysvsem --with-gmp --with-jpeg-dir=/usr --with-libxml-dir=/usr --disable-phar --enable-exif
-make
-make install
+./configure  --prefix=$AppInstallDir/php55 --with-mysql --with-pdo-mysql --with-mysqli --with-gd --with-zlib --enable-bcmath --enable-shmop --with-curl --enable-fpm --enable-mbstring --enable-gd-native-ttf --with-openssl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --with-mcrypt --with-libdir=lib64 --with-freetype-dir=/usr --with-png-dir=/usr --enable-sysvmsg --enable-sysvshm --enable-sysvsem --with-gmp --with-jpeg-dir=/usr --with-libxml-dir=/usr --disable-phar --enable-exif --with-bz2
+make && make install
 
 配置php：
 /bin/cp -f sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
 chmod +x /etc/init.d/php-fpm
-chkconfig --add php-fpm
-/bin/cp -f /opt/LStarter/conf/php.ini /opt/app/php55/lib/php.ini
-/bin/cp -f /opt/LStarter/conf/php-fpm.conf /opt/app/php55/etc/php-fpm.conf
+/bin/cp -f $CompileDir/conf/php.ini $AppInstallDir/php55/lib/php.ini
+/bin/cp -f $CompileDir/conf/php-fpm.conf $AppInstallDir/php55/etc/php-fpm.conf
 
 phpredis扩展
 unzip phpredis-2.2.7.zip
 cd phpredis-2.2.7
-/opt/app/php55/bin/phpize
-./configure --with-php-config=/opt/app/php55/bin/php-config
+$AppInstallDir/php55/bin/phpize
+./configure --with-php-config=$AppInstallDir/php55/bin/php-config
 make && make install
 
 开机启动
@@ -382,5 +385,17 @@ chkconfig --add php-fpm
 ### 安装phpmyadmin
 wget http://jaist.dl.sourceforge.net/project/phpmyadmin/phpMyAdmin/4.3.8/phpMyAdmin-4.3.8-all-languages.zip  
 unzip phpMyAdmin-4.3.8-all-languages.zip
+
+cp -rf phpMyAdmin-4.3.8-all-languages /data/www/pma
+cp -f $CompileDir/conf/nginx_phpmyadmin.conf /opt/app/nginx/conf/conf.d/nginx_phpmyadmin.conf
+cp -f $CompileDir/conf/config.default.php /data/www/pma/libraries/config.default.php
+
+chown www:www -R /data/www/pma
+
+## 当iptable没有设置时，在此设置
+grep '--dport 8080' /etc/sysconfig/iptables >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    sed -i '10a -A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT' /etc/sysconfig/iptables
+fi
 
 rm -rf phpMyAdmin-4.3.8-all-languages

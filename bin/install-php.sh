@@ -37,7 +37,7 @@ unzip $phpredis.zip >/dev/null 2>&1
 
 ## 编译
 cd php-$version
-./configure  --prefix=/opt/app/php55 --with-mysql --with-pdo-mysql --with-mysqli --with-gd --with-zlib --enable-bcmath --enable-shmop --with-curl --enable-fpm --enable-mbstring --enable-gd-native-ttf --with-openssl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --with-mcrypt --with-libdir=lib64 --with-freetype-dir=/usr --with-png-dir=/usr --enable-sysvmsg --enable-sysvshm --enable-sysvsem --with-gmp --with-jpeg-dir=/usr --with-libxml-dir=/usr --disable-phar --enable-exif --with-bz2
+./configure  --prefix=/opt/app/php55 --with-mysql --with-pdo-mysql --with-mysqli --with-gd --with-zlib --enable-bcmath --enable-shmop --with-curl --enable-fpm --enable-mbstring --enable-gd-native-ttf --with-openssl --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --without-pear --with-gettext --with-mcrypt --with-libdir=lib64 --with-freetype-dir=/usr --with-png-dir=/usr --enable-sysvmsg --enable-sysvshm --enable-sysvsem --with-gmp --with-jpeg-dir=/usr --with-libxml-dir=/usr --disable-phar --enable-exif --with-bz2  --enable-intl
 make && make install
 
 ## 配置
