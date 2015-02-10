@@ -38,13 +38,15 @@ if [ $V_SVN == 'y' ]; then
 fi
 
 ## 新增普通用户
+echo "[12]新增普通用户$V_USER"
 id $V_USER >/dev/null 2>&1
 if [ $? -ne 0 ] ; then
     useradd $V_USER
-    echo $V_PASS | passwd --stdin $V_USER   #设置用户密码
+    echo $V_PASS | passwd --stdin $V_USER   >/dev/null 2>&1
+    echo "[12-1]设置用户密码为: $V_PASS "
     sed  -i "98a $V_USER   ALL=(ALL)   NOPASSWD: ALL" /etc/sudoers
 fi
-echo "[12]新增普通用户$V_USER"
+
 
 ## 新建www用户
 id www >/dev/null 2>&1

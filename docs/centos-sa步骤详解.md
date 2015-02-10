@@ -159,7 +159,7 @@ sed  -i '11a -A INPUT -m state --state NEW -m tcp -p tcp --dport 3690 -j ACCEPT'
 
 重启iptables生效
 sudo /etc/init.d/iptables restart
-
+``
 查看
 sudo iptables -L
 ```
