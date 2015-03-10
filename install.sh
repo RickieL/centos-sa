@@ -23,7 +23,7 @@ yum makecache >/dev/null 2>&1
 echo "[2]安装epel源"
 
 ## 基础环境软件
-yum -y install curl wget man vim yum-priorities ntpdate make gcc subversion zlib-devel openssl-devel  gcc-c++ zip unzip autoconf automake openssl pcre-devel gd compat-glibc compat-glibc-headers cpp freetype freetype-devel libjpeg libjpeg-devel  libpng libpng-devel ncurses ncurses-devel libtool libtool-ltdl libtool-ltdl-devel  libxml2 libxml2-devel curl-devel curl libcurl-devel bison flex gmp gmp-devel bzip2-devel file libXpm libXpm-devel re2c libmcrypt-devel.x86_64 libmcrypt.x86_64 rsync git >/dev/null 2>&1
+yum -y install curl wget man vim yum-priorities ntpdate make gcc subversion zlib-devel openssl-devel  gcc-c++ zip unzip autoconf automake openssl pcre-devel gd compat-glibc compat-glibc-headers cpp freetype freetype-devel libjpeg libjpeg-devel  libpng libpng-devel ncurses ncurses-devel libtool libtool-ltdl libtool-ltdl-devel  libxml2 libxml2-devel curl-devel curl libcurl-devel bison flex gmp gmp-devel bzip2-devel file libXpm libXpm-devel re2c libmcrypt-devel.x86_64 libmcrypt.x86_64 rsync git libicu-devel >/dev/null 2>&1
 echo "[3]安装基础软件包"
 
 ## ntp时间同步
